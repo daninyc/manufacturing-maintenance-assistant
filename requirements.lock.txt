@@ -15,7 +15,12 @@ click==8.5.0
 colorama==0.4.6
 durationpy==0.11
 filelock==3.32.5
+fastembed==0.8.0
+loguru==0.7.3
+py-rust-stemmers==0.1.8
+win32-setctime==1.2.0
 flatbuffers==25.12.19
+fonttools==4.64.0
 frozenlist==1.8.0
 fsspec==2026.7.0
 googleapis-common-protos==1.75.3
@@ -67,6 +72,7 @@ Pygments==2.21.0
 PyPika==0.51.1
 pyproject_hooks==1.2.0
 pytest==9.1.1
+pypdf==6.18.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.3
 python-multipart==0.0.32

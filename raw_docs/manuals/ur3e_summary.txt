@@ -1,0 +1,15 @@
+document_id: UR3E-SUMMARY
+version: teaching-v1
+published_at: 2026-09-09（模拟教学发布日期，不是厂商发布日期）
+equipment_id: EQ-ROBOT-001（虚构资产编号）
+equipment_type: collaborative_robot
+source_type: 厂商规格事实摘要；资产和使用场景为教学模拟
+source_url: https://www.universal-robots.com/media/1807464/ur3e_e-series_datasheets_web.pdf
+
+UR3e 规格核对卡
+真实型号：Universal Robots UR3e。模拟工位用途：小件装配练习。
+官方规格：最大负载 3 kg，工作半径 500 mm，6 个旋转关节。
+教学部件分类：机器人本体、控制箱、示教器；本卡不提供拆装方法。
+正常使用范围：负载与工作范围应按对应厂商版本及集成条件核对，额定负载不是任意姿态下的无条件保证。
+教学禁忌：不得将 5 kg 误标为 UR3e 的额定负载；不得根据本卡修改安全设置。
+未收录：润滑扭矩、报警复位步骤、现场维修记录。遇到这类问题回答资料不足。

@@ -16,6 +16,8 @@ class AskRequest(BaseModel):
 
 class Citation(BaseModel):
     source_file: str
+    page: int | None = None
+    source_url: str | None = None
     chunk_id: str
     excerpt: str
     distance: float | None = None
@@ -26,4 +28,3 @@ class AskResponse(BaseModel):
     citations: list[Citation]
     grounded: bool
     request_id: str
-

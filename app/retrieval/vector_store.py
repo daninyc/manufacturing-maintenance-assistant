@@ -26,30 +26,54 @@ def hash_embedding(text: str, dimensions: int = 256) -> list[float]:
 class LocalChromaStore:
     """最薄的 Chroma 封装：持久化、幂等写入和余弦距离查询。"""
 
-    def __init__(self, path: Path, collection_name: str) -> None:
+    def __init__(self, path: Path, collection_name: str, *, semantic: bool = False) -> None:
+        self.semantic = semantic
         path.mkdir(parents=True, exist_ok=True)
         self.client = chromadb.PersistentClient(path=str(path))
         self.collection = self.client.get_or_create_collection(
             name=collection_name,
-            metadata={"hnsw:space": "cosine"},
+            metadata={"hnsw:space": "cosine", "embedding": "bge-small-zh-v1.5" if semantic else "hash-v1"},
         )
+        expected = "bge-small-zh-v1.5" if semantic else "hash-v1"
+        if self.collection.metadata.get("embedding", "hash-v1") != expected:
+            raise ValueError("集合 embedding 不一致，请使用新集合，不能混入不同向量模型")
 
     def reset(self) -> None:
         name = self.collection.name
         self.client.delete_collection(name)
         self.collection = self.client.get_or_create_collection(
             name=name,
-            metadata={"hnsw:space": "cosine"},
+            metadata={"hnsw:space": "cosine",
+                      "embedding": "bge-small-zh-v1.5" if self.semantic else "hash-v1"},
         )
 
     def upsert(self, ids: list[str], documents: list[str], metadatas: list[dict[str, Any]]) -> None:
         # ponytail: hash embedding 只适合基线；Day 2 有真实语义召回需求时替换。
-        embeddings = [hash_embedding(document) for document in documents]
+        if self.semantic:
+            from app.retrieval.embedding import embed_texts
+            # 来源网址和清单字段会稀释语义；仅从向量输入移除，原文与 metadata 原样保留。
+            semantic_texts = []
+            for document, metadata in zip(documents, metadatas, strict=True):
+                body = re.sub(
+                    r"(?m)^(document_id|version|published_at|equipment_id|equipment_type|source_type|source_url):.*\n?",
+                    "", document)
+                semantic_texts.append(f"{metadata.get('document_id', '')}\n{body}")
+            embeddings = embed_texts(semantic_texts)
+        else:
+            embeddings = [hash_embedding(document) for document in documents]
         self.collection.upsert(ids=ids, documents=documents, metadatas=metadatas, embeddings=embeddings)
 
-    def query(self, question: str, top_k: int) -> dict[str, Any]:
+    def query(self, question: str, top_k: int, equipment_id: str | None = None) -> dict[str, Any]:
+        if self.collection.count() == 0:
+            return {"documents": [[]], "metadatas": [[]], "distances": [[]]}
+        if self.semantic:
+            from app.retrieval.embedding import embed_texts
+            vectors = embed_texts([question], query=True)
+        else:
+            vectors = [hash_embedding(question)]
         return self.collection.query(
-            query_embeddings=[hash_embedding(question)],
-            n_results=top_k,
+            query_embeddings=vectors,
+            n_results=min(top_k, self.collection.count()),
+            where={"equipment_id": equipment_id} if equipment_id else None,
             include=["documents", "metadatas", "distances"],
         )

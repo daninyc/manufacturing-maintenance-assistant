@@ -1,178 +1,153 @@
-# Manufacturing Maintenance Assistant
+# 制造设备运维知识助手
 
-一个可本地运行的检索增强问答基线，当前支持 TXT 文档读取、文本清洗、固定长度分块、本地向量化、Chroma 持久化检索、来源引用和 Streamlit 页面。
+基于公开设备资料与模拟资产的文档问答应用，支持 PDF/TXT 导入、语义检索、原文引用和证据不足拒答。
 
-## 当前实现
+> 模拟场景原型，不接入真实产线、不控制设备，不提供现场维修授权。设备规格以适用版本的完整厂商手册为准。
 
-- 读取 UTF-8 TXT 文档，拒绝错误文件类型和空文档。
-- 规范空白字符，保留数字、单位和代码等原始内容。
-- 按字符长度分块，支持 overlap，并生成稳定的 chunk ID。
-- 使用确定性 hash embedding 完成本地向量化，不需要外部模型或 API Key。
-- 使用 Chroma 持久化向量数据，通过 `upsert` 避免同一文档重复入库。
-- 检索 top-k 文本块并返回余弦距离。
-- 引用信息直接取自入库 metadata，包括来源文件、chunk ID 和原文片段。
-- 使用 Pydantic 校验问答和诊断数据结构。
-- 提供命令行入口、Streamlit 页面和 pytest 测试。
+## 功能
 
-## 技术栈
+- 统一加载 UTF-8 TXT 和文本型 PDF，保留文件名、页码、文档编号、版本及设备信息。
+- 保守清洗、字符分块、稳定块编号和 Chroma upsert，支持重复导入。
+- 本地 BGE 中文语义检索，设备过滤，多设备比较候选分配。
+- 无候选或距离不达标时拒答；每条摘录必须属于实际命中块。
+- 本地模式支持明确型号的负载、半径、温度问题。
+- DeepSeek 模式只选择证据编号，由程序恢复原文与来源。
+- 单次问答 CLI、Streamlit 页面、固定问题回归和单元/集成测试。
 
-- Python 3.12
-- ChromaDB
-- Pydantic
-- Streamlit
-- pytest
-- Ruff
+## 环境与安装
 
-## 数据流
-
-```text
-TXT 文档
-  -> 文档校验与读取
-  -> 文本清洗
-  -> 固定长度分块
-  -> hash embedding
-  -> Chroma 持久化
-  -> top-k 检索
-  -> 测试替身回答
-  -> 引用组装
-  -> CLI / Streamlit
-```
-
-详细模块映射见 [`docs/architecture.md`](docs/architecture.md)。
-
-## 项目结构
-
-```text
-.
-├─ app/
-│  ├─ core/config.py           # 路径、集合名和 top-k 配置
-│  ├─ ingestion/               # TXT 读取、清洗、分块和入库
-│  ├─ retrieval/               # hash embedding、Chroma 和检索
-│  ├─ schemas/                 # 问答与诊断数据结构
-│  ├─ services/qa_service.py   # 检索、拒答、引用和基线回答
-│  └─ main.py                  # 命令行入口
-├─ data/
-│  ├─ raw_docs/                # 输入文档
-│  └─ results/                 # 已保存的运行结果
-├─ docs/                       # 架构、决策和验证记录
-├─ tests/test_baseline.py      # 单元与端到端基线测试
-├─ ui/streamlit_app.py         # Web 页面
-├─ .env.example                # 可选配置示例
-├─ LICENSE-NOTICES.md
-└─ requirements.lock.txt       # 锁定依赖
-```
-
-## 环境要求
-
-- Windows PowerShell
-- Python 3.12
-
-## 安装
+已在 Windows / Python 3.12 环境验证。在 PowerShell 执行：
 
 ```powershell
 git clone https://github.com/daninyc/manufacturing-maintenance-assistant.git
-cd manufacturing-maintenance-assistant
-
+Set-Location manufacturing-maintenance-assistant
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -r requirements.lock.txt
+& './.venv/Scripts/python.exe' -m pip install -r requirements.lock.txt
+& './.venv/Scripts/python.exe' -m scripts.fetch_sources
+& './.venv/Scripts/python.exe' -m scripts.prepare_model
+& './.venv/Scripts/python.exe' -m scripts.ingest
 ```
 
-## 配置
+已有虚拟环境时无需重建。首次下载依赖、官方 PDF 和模型需要网络。
+直接调用虚拟环境解释器即可，不必激活环境或修改执行策略。
 
-当前基线不需要 API Key。默认配置如下：
+## 启动
+
+本地问答无需 API Key：
+
+```powershell
+& './.venv/Scripts/python.exe' -m scripts.day2_qa --question 'UR3e 的最大负载和工作半径是多少？' --mode local
+& './.venv/Scripts/streamlit.exe' run ui/streamlit_app.py
+```
+
+页面默认本地模式。输入问题后点击“提问”，可展开引用查看文件、页码、块编号、原文和距离。
+
+### DeepSeek 配置
+
+根目录没有 `.env` 时，将无密钥模板 `.env.example` 复制为 `.env`，仅在本机填写：
 
 ```dotenv
-CHROMA_PATH=data/chroma
-CHROMA_COLLECTION=day1_baseline
-TOP_K=3
+DEEPSEEK_API_KEY=填写自己的有效密钥
+DEEPSEEK_MODEL=deepseek-chat
 ```
-
-如需临时覆盖配置，可在当前 PowerShell 会话中设置环境变量：
 
 ```powershell
-$env:CHROMA_PATH = "data/chroma"
-$env:CHROMA_COLLECTION = "day1_baseline"
-$env:TOP_K = "3"
+& './.venv/Scripts/python.exe' -m scripts.day2_qa --question '比较 UR3e 与 UR5e 的负载和工作半径。' --mode deepseek
 ```
 
-## 命令行运行
+运行时读取根目录 `.env`，不是 `.env.example`。已有进程环境变量优先。
+在线请求向 DeepSeek 发送问题与候选资料，并消耗账户额度。不要上传密钥或未经授权外发的资料。
 
-使用默认文档和默认问题运行，并重建 Chroma collection：
+### CLI 参数
+
+| 参数 | 说明 | 默认 |
+| --- | --- | --- |
+| --question | 必填问题 | 无 |
+| --mode | local / deepseek | local |
+| --top-k | 候选块数量，1–10 | 6 |
+| --max-distance | 最大余弦距离 | 0.50 |
+
+## 输出
+
+返回 `answer`、`citations`、`grounded`、`request_id`。
+引用包含 `source_file`、`page`、`chunk_id`、`excerpt`、可选来源链接及距离。
+无证据时 `grounded=false` 且引用为空；模型请求错误不视为正确拒答。
+PDF 页码从 1 开始，TXT 使用逻辑页码 1；摘录按加载器清洗后的页文本核验。
+`grounded=true` 不代表通过工业安全审查。
+
+## 数据与索引
+
+| 路径 | 内容 |
+| --- | --- |
+| data/raw_docs/manifest.json | 文件、设备映射、版本、来源清单 |
+| data/raw_docs/manuals/*_summary.txt | 三份真实型号规格摘要与模拟资产 |
+| data/raw_docs/manuals/*_official.pdf | 两份官方 PDF 本地快照，不提交 |
+| data/raw_docs/sops/ | 自制模拟核对和信息升级流程，不含真实操作许可 |
+| data/models/ | embedding 缓存，不提交 |
+| data/chroma/ | 持久化索引，不提交 |
+| data/eval/ | 固定问题与预期事实 |
+| docs/evidence/day2/ | 本地生成入库/回归报告，不提交 |
+
+EQ-ROBOT-001、002、003 为模拟编号，分别对应 UR3e、UR5e、IRB 120-3/0.6。
+摘要保留模拟标识与厂商来源，不暗示拥有企业内部数据；未知发布日期保持 unknown。
+官方 PDF 未确认再分发许可，由下载脚本复现。
+
+重复导入更新同 ID 块，并删除同文档不再存在的旧块；每轮独立报告记录导入前后块数、失败数、耗时。
+从 manifest 移除文件不会自动清除该文档历史索引。导入不是跨文档原子事务。
+
+## 功能链路
+
+```text
+PDF/TXT + manifest
+  → 加载清洗 → 字符分块与来源绑定 → BGE 文档向量 → Chroma
+
+问题
+  → 输入校验 → 设备过滤与语义检索 → 距离门控
+  → 本地规则 / DeepSeek 证据编号选择 → 原文与设备来源核验
+  → 答案与引用 / 证据不足拒答
+```
+
+分块为 500 字符、重叠 80 字符，不是 token 数。语义集合为 `day2_semantic_v1`。
+余弦距离越小越接近，0.50 为实验参数，不是概率或通用最优阈值。
+UI 直接调用 Python 服务，目前没有 FastAPI 中间层。
+
+## 测试
+
+先下载 PDF 并入库，然后执行：
 
 ```powershell
-.\.venv\Scripts\python.exe -m app.main --reset
+& './.venv/Scripts/python.exe' -m pytest -q
+& './.venv/Scripts/ruff.exe' check app scripts tests ui --no-cache
+& './.venv/Scripts/python.exe' -m pip check
+& './.venv/Scripts/python.exe' -m scripts.run_day2_smoke --extended
 ```
 
-指定文档和问题：
+默认五题覆盖直接问题、比较、无答案和诱导；`--extended` 执行十二题。
+自行在线验收可运行 `python -m scripts.run_day2_smoke --mode deepseek`，会产生外部请求与费用。
+评测校验来源页摘录、数值设备绑定和拒答行为；条件及否定语义仍需人工复核。
 
-```powershell
-.\.venv\Scripts\python.exe -m app.main `
-  --document data\raw_docs\baseline_demo.txt `
-  --question "维护窗口是什么时间？" `
-  --reset
-```
+## 目录
 
-将结果保存为 JSON：
+| 目录 | 职责 |
+| --- | --- |
+| app/ingestion | 加载、清洗、分块和入库 |
+| app/retrieval | embedding、Chroma 和检索 |
+| app/services | 证据选择、拒答与引用组装 |
+| app/schemas | 输入输出校验 |
+| app/prompts | 在线证据选择规则 |
+| scripts | 下载、入库、CLI、回归 |
+| ui | Streamlit 页面 |
+| tests | 单元/集成测试 |
 
-```powershell
-.\.venv\Scripts\python.exe -m app.main `
-  --reset `
-  --output data\results\day1-baseline.json
-```
+`app/main.py` 保留为早期 hash 基线入口，不是当前语义问答或 Web API 入口。
 
-响应包含 `indexed_chunks`、`answer`、`citations`、`grounded` 和 `request_id`。引用中包含来源文件、chunk ID、原文片段和向量距离。
+## 限制
 
-## Streamlit 运行
+- 不支持 OCR；复杂表格、跨页条件可能需要人工处理。
+- 本地模式、型号识别和字段规则覆盖有限，不是通用工业知识模型。
+- 通用 SOP 不会自动并入具体设备过滤结果。
+- 原文存在不代表现场条件完整或安全许可。
+- 未实现 SQLite 业务查询、多源诊断、FastAPI 正式端点或设备控制。
+- 小样本回归不代表生产准确率；尚未完成完整参数对照实验。
 
-```powershell
-.\.venv\Scripts\streamlit.exe run ui\streamlit_app.py
-```
-
-浏览器访问 `http://localhost:8501`。页面会自动导入 `data/raw_docs/baseline_demo.txt`，展示回答、引用、`grounded` 状态、请求 ID 和向量距离。
-
-## 测试与静态检查
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest
-.\.venv\Scripts\ruff.exe check app ui tests
-.\.venv\Scripts\python.exe -m pip check
-```
-
-当前测试覆盖：
-
-- 分块 overlap 与稳定 chunk ID。
-- 非法分块参数。
-- `top_k` 请求范围校验。
-- 空知识库拒答。
-- TXT 入库、检索、回答和来源引用的端到端链路。
-
-## 核心实现
-
-### 稳定分块
-
-`split_text` 使用 `document_id::chunk-NNNN` 生成稳定 ID。相同文档使用相同参数重复入库时，Chroma `upsert` 更新对应记录，不创建重复记录。
-
-### 本地向量化
-
-`hash_embedding` 将中文字符和英文词元稳定映射到 256 维向量，并进行归一化。它只用于验证数据链路，不具备语义模型的同义表达理解能力。
-
-### 可追溯引用
-
-入库时保存 `source_file`、`document_id`、`chunk_id`、`start` 和 `end`。返回引用由检索结果的 metadata 组装，不由回答文本生成来源。
-
-### 拒答边界
-
-当前仅在 Chroma 没有返回任何结果时设置 `grounded=false` 并拒答。相关性阈值尚未实现，因此一次检索命中不等于答案已通过质量验证。
-
-## 当前限制
-
-- 仅支持 TXT，尚未实现 PDF 解析。
-- hash embedding 只匹配表面词元，不提供真实语义检索。
-- 回答由测试替身拼接首条检索结果，尚未接入生成模型。
-- 尚未实现相关性阈值、正式评测集、FastAPI、SQLite 和多源诊断。
-- `data/chroma/` 是本地运行产物，不提交到 Git。
-
-## 许可证与依赖
-
-项目代码和数据声明见 [`LICENSE-NOTICES.md`](LICENSE-NOTICES.md)，第三方依赖及固定版本见 [`requirements.lock.txt`](requirements.lock.txt)。
+来源和权利边界见 [LICENSE-NOTICES.md](LICENSE-NOTICES.md)。
