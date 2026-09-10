@@ -1,0 +1,15 @@
+document_id: SOP-STARTUP
+version: teaching-v1
+published_at: 2026-09-09（模拟教学发布日期）
+equipment_id: ALL-SIMULATED
+equipment_type: teaching_workflow
+source_type: 自制教学流程，不是厂商操作规程
+source_url: 无；本流程为自制模拟
+
+教学资料开工核对 SOP
+本 SOP 仅用于演示信息核对，不驱动真实设备。
+第一步：核对虚构资产与真实型号映射。EQ-ROBOT-001 对应 UR3e，EQ-ROBOT-002 对应 UR5e，EQ-ROBOT-003 对应 IRB 120-3/0.6。
+第二步：打开对应规格摘要及 source_url，核对版本、负载和工作范围。
+第三步：若题目把 UR3e 负载说成 5 kg，应指出该说法与资料冲突，依据规格说明为 3 kg。
+第四步：缺少现场条件或完整手册时，记录信息缺口并交给负责人确认。
+禁忌：不依据教学摘要执行启动、复位或修改安全参数。

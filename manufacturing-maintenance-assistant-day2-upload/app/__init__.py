@@ -1,0 +1,2 @@
+"""Manufacturing maintenance assistant package."""
+
