@@ -1,0 +1,35 @@
+erDiagram
+    equipment ||--o{ alarms : has
+    equipment ||--o{ maintenanceRecords : has
+    equipment {
+        string equipment_id PK
+        string name
+        string model
+        string equipment_type
+        string production_line
+        string status
+        date installation_date
+        string source_type
+    }
+    alarms {
+        string alarm_id PK
+        string equipment_id FK
+        string code
+        string severity
+        string message
+        datetime occurred_at
+        bool acknowledged
+        bool resolved
+        string document_id
+        string source_type
+    }
+    maintenanceRecords["maintenance_records"] {
+        string record_id PK
+        string equipment_id FK
+        string symptom
+        string action
+        string result
+        datetime maintained_at
+        string document_id
+        string source_type
+    }
