@@ -73,7 +73,7 @@ offline 结果会写入本机独立时间戳目录。查看 passed、failed、sk
 | scripts、ui、tests | 运行命令、管理/验收网页、回归检查 |
 | data/raw_docs、data/seed、data/eval | 可公开的资料摘要、模拟种子和评测样例 |
 
-参阅 [当前架构](docs/architecture.md)、[核心功能](docs/Agent核心功能与实现原理.md)、[授权规范](docs/authz-spec.md) 和 [来源与许可](LICENSE-NOTICES.md)。
+参阅 [当前架构](docs/architecture.md)、[Agent 核心能力升级计划](docs/Agent核心能力升级计划.md)、[核心功能](docs/Agent核心功能与实现原理.md)、[授权规范](docs/authz-spec.md) 和 [来源与许可](LICENSE-NOTICES.md)。
 
 ## 数据与发布边界
 
