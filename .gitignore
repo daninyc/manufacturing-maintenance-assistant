@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.env
+.env.local
+data/chroma/
+.streamlit/
+# 厂商原版 PDF 仅本地查阅，未确认再分发许可；由下载脚本复现。
+data/raw_docs/manuals/*_official.pdf
+data/models/
+data/day2-test-temp-*/
+data/day3-test-temp-*/
+data/*.sqlite3*
+data/uploads/
+data/acceptance-web/
+data/customer-acceptance-evidence/
+data/acceptance-web-archive-*/
+# Flutter 构建缓存、本机路径及签名资产不进入仓库。
+clients/flutter_app/.dart_tool/
+clients/flutter_app/build/
+clients/flutter_app/.flutter-plugins*
+clients/flutter_app/android/.gradle/
+clients/flutter_app/android/local.properties
+clients/flutter_app/android/key.properties
+clients/flutter_app/**/*.jks
+clients/flutter_app/**/*.keystore
+clients/flutter_app/windows/flutter/ephemeral/

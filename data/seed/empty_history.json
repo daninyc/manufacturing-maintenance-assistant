@@ -1,0 +1,19 @@
+{
+  "source_type": "self_authored_simulation",
+  "version": "day3-v1",
+  "description": "独立空历史边界样例，只用于单独数据库；不混入三台主数据。",
+  "equipment": [
+    {
+      "equipment_id": "EQ-TEST-EMPTY",
+      "name": "空历史测试资产",
+      "model": "UR3e",
+      "equipment_type": "collaborative_robot",
+      "production_line": "SIM-TEST",
+      "status": "offline",
+      "installation_date": "2026-02-01",
+      "source_type": "simulation"
+    }
+  ],
+  "alarms": [],
+  "maintenance_records": []
+}

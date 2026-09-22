@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Day 1: baseline",
+      "type": "shell",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "app.main", "--reset"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests",
+      "type": "shell",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "pytest"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Streamlit UI",
+      "type": "shell",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\streamlit.exe",
+      "args": ["run", "ui\\streamlit_app.py"],
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}
+

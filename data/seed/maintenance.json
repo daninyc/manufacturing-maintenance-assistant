@@ -1,0 +1,311 @@
+{
+  "source_type": "self_authored_simulation",
+  "version": "day3-v1",
+  "description": "三台虚构资产，每台五条模拟报警、三条模拟处理记录；SIM-* 不是厂商代码，日期为固定测试数据，非真实维修或现场安全许可。",
+  "equipment": [
+    {
+      "equipment_id": "EQ-ROBOT-001",
+      "name": "模拟装配机器人",
+      "model": "UR3e",
+      "equipment_type": "collaborative_robot",
+      "production_line": "SIM-LINE-A",
+      "status": "maintenance",
+      "installation_date": "2026-02-01",
+      "source_type": "simulation"
+    },
+    {
+      "equipment_id": "EQ-ROBOT-002",
+      "name": "模拟搬运机器人",
+      "model": "UR5e",
+      "equipment_type": "collaborative_robot",
+      "production_line": "SIM-LINE-B",
+      "status": "active",
+      "installation_date": "2026-02-02",
+      "source_type": "simulation"
+    },
+    {
+      "equipment_id": "EQ-ROBOT-003",
+      "name": "模拟分拣机器人",
+      "model": "IRB 120-3/0.6",
+      "equipment_type": "industrial_robot",
+      "production_line": "SIM-LINE-C",
+      "status": "offline",
+      "installation_date": "2026-02-03",
+      "source_type": "simulation"
+    }
+  ],
+  "alarms": [
+    {
+      "alarm_id": "A-001-001",
+      "equipment_id": "EQ-ROBOT-001",
+      "code": "SIM-VERSION-CHECK",
+      "severity": "info",
+      "message": "模拟记录：资料版本核对完成；不代表真实设备报警。",
+      "occurred_at": "2026-09-03T08:00:00Z",
+      "acknowledged": true,
+      "resolved": true,
+      "document_id": "UR3E-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-001-002",
+      "equipment_id": "EQ-ROBOT-001",
+      "code": "SIM-SPEC-MISMATCH",
+      "severity": "warning",
+      "message": "模拟记录：UR3e 被误标为 5 kg，规格摘要为 3 kg；仅核对资料。",
+      "occurred_at": "2026-09-04T08:00:00Z",
+      "acknowledged": true,
+      "resolved": true,
+      "document_id": "UR3E-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-001-003",
+      "equipment_id": "EQ-ROBOT-001",
+      "code": "SIM-CONTEXT-MISSING",
+      "severity": "critical",
+      "message": "模拟记录：缺少现场工况与完整手册；不批准运行或修改参数。",
+      "occurred_at": "2026-09-05T08:00:00Z",
+      "acknowledged": true,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-001-004",
+      "equipment_id": "EQ-ROBOT-001",
+      "code": "SIM-REVIEW-PENDING",
+      "severity": "warning",
+      "message": "模拟记录：信息登记后等待负责人确认，不提供复位动作。",
+      "occurred_at": "2026-09-06T08:00:00Z",
+      "acknowledged": false,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-001-005",
+      "equipment_id": "EQ-ROBOT-001",
+      "code": "SIM-UNKNOWN-999",
+      "severity": "critical",
+      "message": "模拟未知代码：无厂商含义映射；保留未知，不推断故障或维修措施。",
+      "occurred_at": "2026-09-07T08:00:00Z",
+      "acknowledged": false,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-002-001",
+      "equipment_id": "EQ-ROBOT-002",
+      "code": "SIM-VERSION-CHECK",
+      "severity": "info",
+      "message": "模拟记录：资料版本核对完成；不代表真实设备报警。",
+      "occurred_at": "2026-09-03T08:00:00Z",
+      "acknowledged": true,
+      "resolved": true,
+      "document_id": "UR5E-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-002-002",
+      "equipment_id": "EQ-ROBOT-002",
+      "code": "SIM-SPEC-MISMATCH",
+      "severity": "warning",
+      "message": "模拟记录：UR5e 参数被套用到 UR3e；记录型号混淆。",
+      "occurred_at": "2026-09-04T08:00:00Z",
+      "acknowledged": true,
+      "resolved": true,
+      "document_id": "UR5E-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-002-003",
+      "equipment_id": "EQ-ROBOT-002",
+      "code": "SIM-CONTEXT-MISSING",
+      "severity": "critical",
+      "message": "模拟记录：缺少现场工况与完整手册；不批准运行或修改参数。",
+      "occurred_at": "2026-09-05T08:00:00Z",
+      "acknowledged": true,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-002-004",
+      "equipment_id": "EQ-ROBOT-002",
+      "code": "SIM-REVIEW-PENDING",
+      "severity": "warning",
+      "message": "模拟记录：信息登记后等待负责人确认，不提供复位动作。",
+      "occurred_at": "2026-09-06T08:00:00Z",
+      "acknowledged": false,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-002-005",
+      "equipment_id": "EQ-ROBOT-002",
+      "code": "SIM-UNKNOWN-999",
+      "severity": "critical",
+      "message": "模拟未知代码：无厂商含义映射；保留未知，不推断故障或维修措施。",
+      "occurred_at": "2026-09-07T08:00:00Z",
+      "acknowledged": false,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-003-001",
+      "equipment_id": "EQ-ROBOT-003",
+      "code": "SIM-VERSION-CHECK",
+      "severity": "info",
+      "message": "模拟记录：资料版本核对完成；不代表真实设备报警。",
+      "occurred_at": "2026-09-03T08:00:00Z",
+      "acknowledged": true,
+      "resolved": true,
+      "document_id": "IRB120-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-003-002",
+      "equipment_id": "EQ-ROBOT-003",
+      "code": "SIM-SPEC-MISMATCH",
+      "severity": "warning",
+      "message": "模拟记录：把条件性 4 kg 写成 IRB 120 通用负载；需要完整脚注。",
+      "occurred_at": "2026-09-04T08:00:00Z",
+      "acknowledged": true,
+      "resolved": true,
+      "document_id": "IRB120-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-003-003",
+      "equipment_id": "EQ-ROBOT-003",
+      "code": "SIM-CONTEXT-MISSING",
+      "severity": "critical",
+      "message": "模拟记录：缺少现场工况与完整手册；不批准运行或修改参数。",
+      "occurred_at": "2026-09-05T08:00:00Z",
+      "acknowledged": true,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-003-004",
+      "equipment_id": "EQ-ROBOT-003",
+      "code": "SIM-REVIEW-PENDING",
+      "severity": "warning",
+      "message": "模拟记录：信息登记后等待负责人确认，不提供复位动作。",
+      "occurred_at": "2026-09-06T08:00:00Z",
+      "acknowledged": false,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "alarm_id": "A-003-005",
+      "equipment_id": "EQ-ROBOT-003",
+      "code": "SIM-UNKNOWN-999",
+      "severity": "critical",
+      "message": "模拟未知代码：无厂商含义映射；保留未知，不推断故障或维修措施。",
+      "occurred_at": "2026-09-07T08:00:00Z",
+      "acknowledged": false,
+      "resolved": false,
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    }
+  ],
+  "maintenance_records": [
+    {
+      "record_id": "M-001-001",
+      "equipment_id": "EQ-ROBOT-001",
+      "symptom": "型号或规格标记混淆",
+      "action": "依据对应规格摘要更正模拟资料标记；未执行设备操作。",
+      "result": "resolved",
+      "maintained_at": "2026-09-04T09:00:00Z",
+      "document_id": "UR3E-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-001-002",
+      "equipment_id": "EQ-ROBOT-001",
+      "symptom": "缺少现场条件和完整手册",
+      "action": "登记资料缺口并转人工确认；不批准启动、复位或修改安全设置。",
+      "result": "escalated",
+      "maintained_at": "2026-09-06T09:00:00Z",
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-001-003",
+      "equipment_id": "EQ-ROBOT-001",
+      "symptom": "未知模拟报警代码 SIM-UNKNOWN-999",
+      "action": "保留原始模拟代码，等待补充适用手册；没有维修结论。",
+      "result": "unresolved",
+      "maintained_at": "2026-09-08T09:00:00Z",
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-002-001",
+      "equipment_id": "EQ-ROBOT-002",
+      "symptom": "型号或规格标记混淆",
+      "action": "依据对应规格摘要更正模拟资料标记；未执行设备操作。",
+      "result": "resolved",
+      "maintained_at": "2026-09-04T09:00:00Z",
+      "document_id": "UR5E-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-002-002",
+      "equipment_id": "EQ-ROBOT-002",
+      "symptom": "缺少现场条件和完整手册",
+      "action": "登记资料缺口并转人工确认；不批准启动、复位或修改安全设置。",
+      "result": "escalated",
+      "maintained_at": "2026-09-06T09:00:00Z",
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-002-003",
+      "equipment_id": "EQ-ROBOT-002",
+      "symptom": "未知模拟报警代码 SIM-UNKNOWN-999",
+      "action": "保留原始模拟代码，等待补充适用手册；没有维修结论。",
+      "result": "unresolved",
+      "maintained_at": "2026-09-08T09:00:00Z",
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-003-001",
+      "equipment_id": "EQ-ROBOT-003",
+      "symptom": "型号或规格标记混淆",
+      "action": "依据对应规格摘要更正模拟资料标记；未执行设备操作。",
+      "result": "resolved",
+      "maintained_at": "2026-09-04T09:00:00Z",
+      "document_id": "IRB120-SUMMARY",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-003-002",
+      "equipment_id": "EQ-ROBOT-003",
+      "symptom": "缺少现场条件和完整手册",
+      "action": "登记资料缺口并转人工确认；不批准启动、复位或修改安全设置。",
+      "result": "escalated",
+      "maintained_at": "2026-09-06T09:00:00Z",
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    },
+    {
+      "record_id": "M-003-003",
+      "equipment_id": "EQ-ROBOT-003",
+      "symptom": "未知模拟报警代码 SIM-UNKNOWN-999",
+      "action": "保留原始模拟代码，等待补充适用手册；没有维修结论。",
+      "result": "unresolved",
+      "maintained_at": "2026-09-08T09:00:00Z",
+      "document_id": "SOP-ESCALATION",
+      "source_type": "simulation"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "indexed_chunks": 1,
+  "answer": "基线测试替身根据首条命中文本回答：基线测试文档\n\n这是作者为 Day 1 环境验证编写的普通模拟文本，不包含企业内部信息。\n演示系统的例行维护窗口为每周三上午十点，预计持续三十分钟。\n维护开始前应保存未完成的演示输入，并确认当前没有正在运行的测试任务。\n本文件仅用于验证上传、解析、分块、embedding、Chroma、检索、回答替身和 UI 的连接。",
+  "citations": [
+    {
+      "source_file": "baseline_demo.txt",
+      "chunk_id": "baseline_demo::chunk-0000",
+      "excerpt": "基线测试文档\n\n这是作者为 Day 1 环境验证编写的普通模拟文本，不包含企业内部信息。\n演示系统的例行维护窗口为每周三上午十点，预计持续三十分钟。\n维护开始前应保存未完成的演示输入，并确认当前没有正在运行的测试任务。\n本文件仅用于验证上传、解析、分块、embedding、Chroma、检索、回答替身和 UI 的连接。",
+      "distance": 0.777692
+    }
+  ],
+  "grounded": true,
+  "request_id": "961fa2d9-fa1b-40ea-a3d0-3dd115b603d2"
+}

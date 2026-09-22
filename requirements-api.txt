@@ -1,0 +1,2 @@
+-r requirements.lock.txt
+fastapi==0.141.1

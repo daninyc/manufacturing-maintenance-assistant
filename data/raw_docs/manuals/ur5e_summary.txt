@@ -1,0 +1,15 @@
+document_id: UR5E-SUMMARY
+version: simulation-v2
+published_at: 2026-09-09（模拟资料发布日期）
+equipment_id: EQ-ROBOT-002（虚构资产编号）
+equipment_type: collaborative_robot
+source_type: 厂商规格事实摘要；资产和使用场景为模拟
+source_url: https://www.universal-robots.com/manuals/EN/HTML/SW10_9/Content/prod-usr-man/complianceUR5e/H_g5_sections/appendix_g5/tech_spec_sheet.htm
+
+UR5e 规格核对卡
+真实型号：Universal Robots UR5e。模拟用途：中小零件搬运演示。
+官方规格：最大负载 5 kg，工作半径 850 mm，6 个旋转关节。
+官方环境范围：0–50 °C；超过 35 °C 时可能降低速度和性能。
+部件分类：机器人本体、控制箱、示教器；这不是维修拆装指南。
+使用限制：不得将 UR5e 参数套用到 UR3e；不得把温度上限理解成全性能保证。
+现场安全评估、末端工具重量与负载分布必须回到对应完整手册核对；本卡没有给出现场许可。

@@ -1,0 +1,15 @@
+document_id: IRB120-SUMMARY
+version: simulation-v2
+published_at: 2026-09-09（模拟资料发布日期）
+equipment_id: EQ-ROBOT-003（虚构资产编号）
+equipment_type: industrial_robot
+source_type: 厂商规格事实摘要；资产和使用场景为模拟
+source_url: https://library.e.abb.com/public/80dc7622db6bcb8dc1257b130057a8fd/ROBO149EN_C%20LR.pdf
+
+ABB IRB 120 规格核对卡
+对应真实型号：IRB 120-3/0.6。模拟用途：小件分拣训练。
+该官方规格页列出工作半径 580 mm，标准负载 3 kg。
+原表的 4 kg 是带条件的说明，不是本卡承诺的通用负载；如涉及此工况需完整核对原文脚注。
+部件分类：机器人本体与控制系统；本卡不提供现场维修步骤。
+正常范围：仅在厂商指定负载图和工况内使用，本卡没有完整负载图。
+使用限制：不得仅凭型号后缀把半径写成 600 mm；不得根据摘要批准超载。
